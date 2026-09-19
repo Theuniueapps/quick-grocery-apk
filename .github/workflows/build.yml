@@ -1,0 +1,44 @@
+name: Build Grocery APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Create Skeleton Android Project
+        run: |
+          flutter create --org com.market --project-name grocery_app temp_app
+          cp -r temp_app/android ./android
+          mkdir -p android/app
+          if [ -f "google-services.json" ]; then
+            cp google-services.json android/app/
+          fi
+          sed -i '/apply from: "\$flutterRoot\/packages\/flutter_tools\/gradle\/flutter.gradle"/a apply plugin: "com.google.gms.google-services"' android/app/build.gradle || true
+
+      - name: Fetch Dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release --no-tree-shake-icons
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: grocery-app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
