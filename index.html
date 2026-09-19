@@ -19,27 +19,29 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background-color: var(--cream-bg); color: var(--text-dark); padding-bottom: 90px; }
 
-    header { background-color: var(--primary-dark); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
-    .brand h1 { font-size: 20px; font-weight: 700; }
-    .brand p { font-size: 11px; opacity: 0.8; margin-top: 2px; }
-    .brand .delivery-rate { font-size: 12px; color: var(--accent-yellow); margin-top: 4px; font-weight: 600; }
-    .header-icons { display: flex; gap: 12px; }
-    .icon-badge-btn { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; position: relative; font-size: 16px; }
-    .badge-count { position: absolute; top: -3px; right: -3px; background: #e03b24; color: white; font-size: 10px; font-weight: bold; width: 17px; height: 17px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    /* Top Navigation Bar */
+    header { background-color: var(--primary-dark); color: white; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
+    .brand h1 { font-size: 19px; font-weight: 700; }
+    .brand p { font-size: 11px; opacity: 0.85; margin-top: 2px; }
+    .brand .delivery-rate { font-size: 11px; color: var(--accent-yellow); margin-top: 4px; font-weight: 600; }
+    .header-icons { display: flex; gap: 10px; }
+    .icon-badge-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; position: relative; font-size: 16px; }
+    .badge-count { position: absolute; top: -3px; right: -3px; background: #e03b24; color: white; font-size: 10px; font-weight: bold; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .sub-bar { background-color: var(--accent-yellow); height: 3px; width: 100%; }
 
-    .sub-bar { background-color: var(--accent-yellow); height: 4px; width: 100%; }
-    .container { max-width: 480px; margin: 0 auto; padding: 18px 16px; }
-
+    .container { max-width: 480px; margin: 0 auto; padding: 16px; }
     .section-title { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
     .section-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
 
+    /* Category Filter Pills */
     .category-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; scrollbar-width: none; }
     .category-scroll::-webkit-scrollbar { display: none; }
     .cat-pill { padding: 8px 16px; border-radius: 20px; background: white; border: 1px solid #dfd8cc; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; color: #444; }
     .cat-pill.active { background: var(--btn-green); color: white; border-color: var(--btn-green); }
 
-    .product-card { background: var(--card-bg); border-radius: 14px; padding: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); border: 1px solid #eee8dc; }
-    .prod-icon { width: 56px; height: 56px; border-radius: 12px; background: #f0eae1; display: flex; align-items: center; justify-content: center; font-size: 26px; overflow: hidden; }
+    /* Items */
+    .product-card { background: var(--card-bg); border-radius: 14px; padding: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.03); border: 1px solid #eee8dc; }
+    .prod-icon { width: 54px; height: 54px; border-radius: 12px; background: #f0eae1; display: flex; align-items: center; justify-content: center; font-size: 26px; overflow: hidden; }
     .prod-icon img { width: 100%; height: 100%; object-fit: cover; }
     .prod-details { flex: 1; }
     .prod-name { font-size: 16px; font-weight: 700; }
@@ -47,32 +49,33 @@
     .prod-stars { color: #f5a623; font-size: 11px; margin: 3px 0; }
     .prod-stock { font-size: 11px; color: var(--btn-green); font-weight: 600; }
     .prod-out-stock { color: #d9534f; font-weight: 600; font-size: 11px; }
-
     .prod-action { text-align: right; }
     .prod-price { font-size: 16px; font-weight: 800; color: #8c2a1c; margin-bottom: 6px; }
     .btn-add { background: var(--btn-green); color: white; border: none; padding: 7px 18px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; }
-    
+
     .qty-counter { display: flex; align-items: center; background: #ede7dc; border-radius: 8px; padding: 2px 6px; gap: 8px; }
     .qty-counter button { background: none; border: none; font-size: 16px; font-weight: bold; cursor: pointer; padding: 4px 6px; color: var(--primary-dark); }
     .qty-counter span { font-weight: 700; font-size: 14px; min-width: 14px; text-align: center; }
 
-    .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 14px 16px; background: white; border-top: 1px solid #e5dec9; max-width: 480px; margin: 0 auto; box-shadow: 0 -4px 10px rgba(0,0,0,0.06); }
+    /* Sticky Bottom Actions */
+    .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 14px 16px; background: white; border-top: 1px solid #e5dec9; max-width: 480px; margin: 0 auto; }
     .btn-red-action { width: 100%; background: var(--btn-action-red); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; display: block; }
-    .btn-red-action:disabled { background: #bbb; cursor: not-allowed; }
 
-    .back-nav { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
-    .circle-back { width: 34px; height: 34px; border-radius: 50%; background: white; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+    /* Nav Back */
+    .back-nav { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; border-bottom: 1px solid #e9e2d3; padding-bottom: 10px; }
+    .circle-back { width: 32px; height: 32px; border-radius: 50%; background: white; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; }
 
     .summary-box { background: white; border-radius: 12px; padding: 16px; border: 1px solid #eee8dc; margin-top: 16px; }
     .summary-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; }
     .summary-row.total { font-size: 17px; font-weight: 800; border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px; }
-    .summary-note { font-size: 11px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
+    .summary-note { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
 
     .field-group { margin-bottom: 16px; }
-    .field-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #444; }
-    .field-group input, .field-group select { width: 100%; padding: 13px 14px; border-radius: 10px; border: 1px solid #ddd6c7; background: white; font-size: 14px; outline: none; }
+    .field-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: #444; }
+    .field-group input, .field-group select { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid #ddd6c7; background: white; font-size: 14px; outline: none; }
+    .field-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
 
-    .btn-share-loc { width: 100%; border: 1px solid var(--btn-green); background: #eaf4ec; color: var(--btn-green); border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; }
+    .btn-share-loc { width: 100%; border: 1px solid var(--btn-green); background: #eaf4ec; color: var(--btn-green); border-radius: 8px; padding: 11px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
 
     .pay-card { border: 1px solid #dfd8cc; background: white; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; font-weight: 600; }
     .pay-card.selected { border-color: var(--btn-green); background: #f2f8f3; }
@@ -80,15 +83,20 @@
     .upi-qr-box img { width: 160px; height: 160px; margin: 10px auto; }
     .upi-vpa-copy { background: #f0ebe1; padding: 6px 12px; border-radius: 6px; font-size: 12px; display: inline-block; font-weight: 600; margin-top: 6px; }
 
-    .order-confirm-card { text-align: center; padding: 30px 10px; }
-    .order-id-badge { font-size: 18px; font-weight: 800; color: var(--btn-green); margin: 16px 0; }
-    .btn-whatsapp { background: #25d366; color: white; border: none; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; text-decoration: none; }
+    /* Admin Tabs */
+    .admin-tabs { display: flex; border-bottom: 1px solid #dfd8cc; margin-bottom: 16px; }
+    .admin-tab-btn { flex: 1; text-align: center; padding: 10px; background: none; border: none; font-size: 13px; font-weight: 600; color: #777; cursor: pointer; }
+    .admin-tab-btn.active { color: #222; border-bottom: 2px solid #222; font-weight: 700; }
 
-    .admin-tabs { display: flex; border-bottom: 1px solid #dfd8cc; margin-bottom: 14px; }
-    .admin-tab-btn { flex: 1; text-align: center; padding: 10px; background: none; border: none; font-size: 14px; font-weight: 600; color: #666; cursor: pointer; }
-    .admin-tab-btn.active { color: var(--btn-green); border-bottom: 3px solid var(--btn-green); }
-    .order-item-chip { font-size: 13px; color: var(--btn-green); font-weight: 700; margin-top: 4px; }
-    
+    /* PIN Lock Screen */
+    .lock-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; }
+    .lock-icon-art { font-size: 44px; margin-bottom: 12px; }
+    .lock-title { font-size: 13px; font-weight: 700; color: #333; margin-bottom: 12px; }
+    .pin-input-field { width: 180px; text-align: center; letter-spacing: 12px; font-size: 24px; font-weight: 800; padding: 10px; border-radius: 10px; border: 1px solid #ddd6c7; background: white; outline: none; margin-bottom: 14px; }
+    .btn-unlock { background: #1b3323; color: white; border: none; border-radius: 8px; padding: 10px 24px; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .lock-note { font-size: 11px; color: #888; margin-top: 14px; }
+
+    /* Modal */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
     .modal-card { background: white; border-radius: 16px; padding: 20px; width: 100%; max-width: 440px; max-height: 90vh; overflow-y: auto; }
   </style>
@@ -98,6 +106,7 @@
     import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, updateDoc, deleteDoc, serverTimestamp, query, orderBy } 
       from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
+    // Your Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyC4ZIN6ZcL2DJkBtLkwV3sfixurCDtcF8",
       authDomain: "local-grocery-f75ca.firebaseapp.com",
@@ -110,16 +119,20 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Replace with your real phone number if different
-    const OWNER_PHONE = "919898989898";
-    const UPI_ID = "shaiksophipasha@oksbi";
-    const ADMIN_PIN = "1234";
+    // Global Store State
+    let shopConfig = {
+      shopName: "Basket & Ledger",
+      phone: "919951270634",
+      upiId: "shaiksophipasha@oksbi",
+      deliveryRate: 10,
+      shopLocation: "",
+      pin: "1234"
+    };
 
     let catalog = [];
     let cart = {};
     let activeCat = "All";
     let paymentMethod = "COD";
-    let deliveryPerKm = 10;
     let base64ImageString = "";
 
     window.showScreen = (screenId) => {
@@ -136,24 +149,90 @@
       renderCatalog();
     };
 
-    onSnapshot(doc(db, "settings", "delivery"), (docSnap) => {
+    // 1. Settings Realtime Listener
+    onSnapshot(doc(db, "settings", "shopConfig"), (docSnap) => {
       if (docSnap.exists()) {
-        deliveryPerKm = docSnap.data().perKm || 10;
+        shopConfig = { ...shopConfig, ...docSnap.data() };
       } else {
-        setDoc(doc(db, "settings", "delivery"), { perKm: 10 });
+        setDoc(doc(db, "settings", "shopConfig"), shopConfig);
       }
-      document.getElementById('headerDeliveryRate').innerText = `🚚 Delivery ₹${deliveryPerKm}/km`;
-      document.getElementById('checkoutDeliveryRateNote').innerText = `₹${deliveryPerKm}/km`;
-      document.getElementById('adminDeliveryInput').value = deliveryPerKm;
+      applySettingsToUI();
     });
 
-    window.saveDeliveryRate = async () => {
-      const rate = parseFloat(document.getElementById('adminDeliveryInput').value);
-      if (isNaN(rate) || rate < 0) return alert("Please enter a valid rate!");
-      await setDoc(doc(db, "settings", "delivery"), { perKm: rate });
-      alert("Delivery charge per km updated!");
+    function applySettingsToUI() {
+      document.getElementById('headerShopName').innerText = shopConfig.shopName || "Basket & Ledger";
+      document.getElementById('headerDeliveryRate').innerText = `🚚 Delivery ₹${shopConfig.deliveryRate}/km`;
+      document.getElementById('checkoutDeliveryRateNote').innerText = `₹${shopConfig.deliveryRate}/km`;
+
+      // Fill in Settings screen fields
+      document.getElementById('setShopName').value = shopConfig.shopName || "";
+      document.getElementById('setPhone').value = shopConfig.phone || "";
+      document.getElementById('setUpiId').value = shopConfig.upiId || "";
+      document.getElementById('setDeliveryRate').value = shopConfig.deliveryRate || 10;
+      document.getElementById('setPin').value = shopConfig.pin || "1234";
+      document.getElementById('shopLocLabel').innerText = shopConfig.shopLocation 
+        ? `Location set: ${shopConfig.shopLocation}` 
+        : "Not set yet — tap the button above once, from the shop.";
+
+      // Check UPI Visibility
+      if (!shopConfig.upiId || shopConfig.upiId.trim() === "") {
+        document.getElementById('payUPI').style.display = "none";
+        selectPayment('COD');
+      } else {
+        document.getElementById('payUPI').style.display = "flex";
+        document.getElementById('upiVpaDisplay').innerText = shopConfig.upiId;
+      }
+    }
+
+    // Save All Shop Settings
+    window.saveSettings = async () => {
+      const shopName = document.getElementById('setShopName').value.trim();
+      const phone = document.getElementById('setPhone').value.trim();
+      const upiId = document.getElementById('setUpiId').value.trim();
+      const deliveryRate = parseFloat(document.getElementById('setDeliveryRate').value) || 10;
+      const pin = document.getElementById('setPin').value.trim() || "1234";
+
+      const updated = {
+        ...shopConfig,
+        shopName,
+        phone,
+        upiId,
+        deliveryRate,
+        pin
+      };
+
+      await setDoc(doc(db, "settings", "shopConfig"), updated);
+      alert("Settings saved successfully!");
     };
 
+    // Grab Shop Location
+    window.saveShopLocation = () => {
+      if (!navigator.geolocation) return alert("Geolocation not supported by your browser");
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          const locStr = `${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`;
+          shopConfig.shopLocation = locStr;
+          await setDoc(doc(db, "settings", "shopConfig"), { ...shopConfig, shopLocation: locStr });
+          document.getElementById('shopLocLabel').innerText = `Location set: ${locStr}`;
+          alert("Shop location saved!");
+        },
+        () => alert("Failed to get location. Make sure GPS permissions are enabled.")
+      );
+    };
+
+    // PIN Authentication
+    window.verifyPin = () => {
+      const entered = document.getElementById('adminPinInput').value.trim();
+      if (entered === (shopConfig.pin || "1234")) {
+        document.getElementById('adminPinInput').value = "";
+        showScreen('screenAdmin');
+        switchAdminTab('items');
+      } else {
+        alert("Incorrect PIN!");
+      }
+    };
+
+    // 2. Catalog Realtime Listener
     onSnapshot(collection(db, "products"), (snapshot) => {
       catalog = [];
       snapshot.forEach(docSnap => catalog.push({ id: docSnap.id, ...docSnap.data() }));
@@ -167,7 +246,7 @@
       const filtered = activeCat === "All" ? catalog : catalog.filter(p => p.category === activeCat);
 
       if (filtered.length === 0) {
-        container.innerHTML = `<p style="text-align:center; padding:30px; color:#888;">No items found. Tap 🔒 to add items in Admin mode.</p>`;
+        container.innerHTML = `<p style="text-align:center; padding:30px; color:#888;">No items found in this section.</p>`;
         return;
       }
 
@@ -270,9 +349,11 @@
       document.getElementById('checkoutItemsCount').innerText = count;
       document.getElementById('checkoutTotal').innerText = `₹${subtotal}`;
       
-      const upiPayUrl = `upi://pay?pa=${UPI_ID}&pn=GroceryShop&am=${subtotal}&cu=INR`;
-      document.getElementById('upiQrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiPayUrl)}`;
-      document.getElementById('upiAmountText').innerText = `Amount to pay: ₹${subtotal}`;
+      if (shopConfig.upiId) {
+        const upiPayUrl = `upi://pay?pa=${shopConfig.upiId}&pn=${encodeURIComponent(shopConfig.shopName)}&am=${subtotal}&cu=INR`;
+        document.getElementById('upiQrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiPayUrl)}`;
+        document.getElementById('upiAmountText').innerText = `Amount to pay: ₹${subtotal}`;
+      }
     }
 
     window.detectLocation = () => {
@@ -283,7 +364,7 @@
           const lon = pos.coords.longitude;
           document.getElementById('custLocationPin').value = `https://maps.google.com/?q=${lat},${lon}`;
         },
-        () => alert("Could not fetch location. Please enter your address.")
+        () => alert("Could not fetch location. Please type your address.")
       );
     };
 
@@ -389,7 +470,7 @@
         locationPin: locPin,
         items: orderItems,
         total,
-        deliveryRateApplied: deliveryPerKm,
+        deliveryRateApplied: shopConfig.deliveryRate,
         paymentMethod,
         status: "New",
         timestamp: serverTimestamp()
@@ -406,21 +487,13 @@
       if (locPin) text += `*Maps Pin:* ${locPin}\n`;
       text += `\n*Items:*\n`;
       orderItems.forEach(i => text += `• ${i.name} x${i.qty} (${i.unit})\n`);
-      text += `— *Items Total: ₹${total}*\n(Delivery @ ₹${deliveryPerKm}/km to be added upon route)\n*Payment:* ${paymentMethod}`;
+      text += `— *Items Total: ₹${total}*\n(Delivery @ ₹${shopConfig.deliveryRate}/km to be added upon route)\n*Payment:* ${paymentMethod}`;
 
-      const waUrl = `https://wa.me/${OWNER_PHONE}?text=${encodeURI(text)}`;
+      const waNumber = shopConfig.phone || "919951270634";
+      const waUrl = `https://wa.me/${waNumber}?text=${encodeURI(text)}`;
       document.getElementById('btnWhatsAppSend').href = waUrl;
 
       showScreen('screenConfirm');
-    };
-
-    window.promptAdminLogin = () => {
-      const pin = prompt("Enter Shop Owner PIN:");
-      if (pin === ADMIN_PIN) {
-        showScreen('screenAdmin');
-      } else if (pin) {
-        alert("Incorrect PIN!");
-      }
     };
 
     window.switchAdminTab = (tab) => {
@@ -469,7 +542,7 @@
             </div>
             <div style="font-size:14px; font-weight:600;">${ord.customerName} - ${ord.phone}</div>
             <div style="font-size:13px; color:#555;">📍 ${ord.address}</div>
-            <div class="order-item-chip">🛒 ${itemsSummary}</div>
+            <div style="font-size:13px; color:var(--btn-green); font-weight:700;">🛒 ${itemsSummary}</div>
             <div style="font-size:14px; font-weight:800; margin-top:4px;">Items ₹${ord.total} (${ord.paymentMethod})</div>
             <div style="display:flex; gap:8px; margin-top:6px; width:100%;">
               <a href="https://wa.me/${ord.phone}" target="_blank" style="text-decoration:none; background:#25d366; color:white; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700;">WhatsApp</a>
@@ -487,14 +560,15 @@
 </head>
 <body>
 
+  <!-- App Header -->
   <header>
     <div class="brand">
-      <h1>Basket & Ledger</h1>
+      <h1 id="headerShopName">Basket & Ledger</h1>
       <p>Fresh picks, hand-picked delivery</p>
       <div id="headerDeliveryRate" class="delivery-rate">🚚 Delivery ₹10/km</div>
     </div>
     <div class="header-icons">
-      <div class="icon-badge-btn" onclick="promptAdminLogin()">🔒</div>
+      <div class="icon-badge-btn" onclick="showScreen('screenLock')">🔒</div>
       <div class="icon-badge-btn" onclick="showScreen('screenCart')">
         🧺
         <span id="cartBadgeCount" class="badge-count" style="display:none;">0</span>
@@ -503,6 +577,7 @@
   </header>
   <div class="sub-bar"></div>
 
+  <!-- SCREEN 1: Storefront (Catalog) -->
   <div id="screenCatalog" class="screen container">
     <h2 class="section-title">Today's basket</h2>
     <p class="section-desc">Pick what you need — we'll fetch it fresh from the market.</p>
@@ -518,10 +593,11 @@
     <div id="catalogList"></div>
   </div>
 
+  <!-- SCREEN 2: Cart View -->
   <div id="screenCart" class="screen container" style="display:none;">
     <div class="back-nav">
       <div class="circle-back" onclick="showScreen('screenCatalog')">←</div>
-      <h2 style="font-size: 19px; font-weight:800;">Your cart</h2>
+      <h2 style="font-size: 18px; font-weight:800;">Your cart</h2>
     </div>
 
     <div id="cartItemList"></div>
@@ -543,10 +619,11 @@
     </div>
   </div>
 
+  <!-- SCREEN 3: Delivery Details & Payment -->
   <div id="screenDetails" class="screen container" style="display:none;">
     <div class="back-nav">
       <div class="circle-back" onclick="showScreen('screenCart')">←</div>
-      <h2 style="font-size: 19px; font-weight:800;">Delivery details</h2>
+      <h2 style="font-size: 18px; font-weight:800;">Delivery details</h2>
     </div>
 
     <div class="summary-box" style="margin-bottom: 18px;">
@@ -582,7 +659,7 @@
     <div class="field-group">
       <label>Location pin (optional, but helps a lot)</label>
       <input id="custLocationPin" placeholder="Paste a Google Maps link, or tap Share below">
-      <button class="btn-share-loc" onclick="detectLocation()">📍 Share my location</button>
+      <button class="btn-share-loc" style="margin-top:8px;" onclick="detectLocation()">📍 Share my location</button>
     </div>
 
     <h3 style="font-size:14px; font-weight:700; margin: 18px 0 8px;">How will you pay?</h3>
@@ -605,7 +682,7 @@
 
     <div id="upiDetails" class="upi-qr-box" style="display:none;">
       <img id="upiQrCode" src="" alt="UPI QR Code">
-      <div class="upi-vpa-copy">shaiksophipasha@oksbi</div>
+      <div id="upiVpaDisplay" class="upi-vpa-copy">shaiksophipasha@oksbi</div>
       <div id="upiAmountText" style="font-size:13px; font-weight:700; margin-top:8px;"></div>
     </div>
 
@@ -614,14 +691,15 @@
     </div>
   </div>
 
+  <!-- SCREEN 4: Order Confirmed -->
   <div id="screenConfirm" class="screen container" style="display:none;">
-    <div class="order-confirm-card">
+    <div style="text-align:center; padding:30px 10px;">
       <h2 style="font-size:20px; font-weight:800;">Order sent!</h2>
       <p style="font-size:13px; color:#666; margin: 8px 0 16px;">The shop has your order. They'll confirm the total once items are weighed and let you know when it's on the way.</p>
       
-      <div id="confOrderId" class="order-id-badge">Order ORD-000000</div>
+      <div id="confOrderId" style="font-size:18px; font-weight:800; color:var(--btn-green); margin:16px 0;">Order ORD-000000</div>
 
-      <a id="btnWhatsAppSend" class="btn-whatsapp" href="#" target="_blank">
+      <a id="btnWhatsAppSend" href="#" target="_blank" style="background:#25d366; color:white; border:none; border-radius:12px; padding:14px; font-size:15px; font-weight:700; width:100%; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer; text-decoration:none;">
         📱 Send to shop on WhatsApp
       </a>
 
@@ -631,10 +709,27 @@
     </div>
   </div>
 
+  <!-- SCREEN 5: Dedicated PIN Lock Screen (Matching Image 2) -->
+  <div id="screenLock" class="screen container" style="display:none;">
+    <div class="back-nav">
+      <div class="circle-back" onclick="showScreen('screenCatalog')">←</div>
+      <h2 style="font-size: 16px; font-weight:700;">Shop owner</h2>
+    </div>
+
+    <div class="lock-wrapper">
+      <div class="lock-icon-art">🔐</div>
+      <div class="lock-title">Enter your PIN</div>
+      <input id="adminPinInput" class="pin-input-field" type="password" maxlength="4" placeholder="••••">
+      <button class="btn-unlock" onclick="verifyPin()">Unlock</button>
+      <div class="lock-note">Default PIN is 1234 — change it in Settings once inside.</div>
+    </div>
+  </div>
+
+  <!-- SCREEN 6: Shop Dashboard with Complete Settings Page (Matching Image 1) -->
   <div id="screenAdmin" class="screen container" style="display:none;">
     <div class="back-nav">
       <div class="circle-back" onclick="showScreen('screenCatalog')">←</div>
-      <h2 style="font-size: 19px; font-weight:800;">Shop dashboard</h2>
+      <h2 style="font-size: 16px; font-weight:700;">Shop dashboard</h2>
     </div>
 
     <div class="admin-tabs">
@@ -643,27 +738,55 @@
       <button id="tabBtnSettings" class="admin-tab-btn" onclick="switchAdminTab('settings')">Settings</button>
     </div>
 
+    <!-- Tab 1: Items List -->
     <div id="adminItemsTab">
       <button onclick="openProductModal()" style="width:100%; background:var(--btn-green); color:white; border:none; padding:12px; border-radius:10px; font-weight:700; margin-bottom:14px; cursor:pointer;">+ Add Item with Photo</button>
       <div id="adminItemsList"></div>
     </div>
 
+    <!-- Tab 2: Orders List -->
     <div id="adminOrdersTab" style="display:none;">
       <div id="adminOrdersList"></div>
     </div>
 
+    <!-- Tab 3: Complete Settings Page -->
     <div id="adminSettingsTab" style="display:none;">
-      <div class="summary-box">
-        <h3 style="margin-bottom:12px;">Delivery Settings</h3>
-        <div class="field-group">
-          <label>Delivery Rate (₹ per kilometer)</label>
-          <input id="adminDeliveryInput" type="number" placeholder="e.g. 10">
-        </div>
-        <button class="btn-red-action" style="padding:12px;" onclick="saveDeliveryRate()">Save Delivery Rate</button>
+      <div class="field-group">
+        <label>Shop name</label>
+        <input id="setShopName" placeholder="Basket & Ledger">
       </div>
+
+      <div class="field-group">
+        <label>Your WhatsApp number (with country code, digits only)</label>
+        <input id="setPhone" type="tel" placeholder="919951270634">
+      </div>
+
+      <div class="field-group">
+        <label>Your UPI ID (VPA) — leave blank to hide UPI at checkout</label>
+        <input id="setUpiId" placeholder="shaiksophipasha@oksbi">
+      </div>
+
+      <div class="field-group">
+        <label>Delivery charge per km (₹)</label>
+        <input id="setDeliveryRate" type="number" placeholder="10">
+      </div>
+
+      <div class="field-group">
+        <label>Shop location (used to measure delivery distance)</label>
+        <button class="btn-share-loc" onclick="saveShopLocation()">📍 Use my current location as the shop</button>
+        <div id="shopLocLabel" class="field-subtitle">Not set yet — tap the button above once, from the shop.</div>
+      </div>
+
+      <div class="field-group">
+        <label>Admin PIN (4 digits)</label>
+        <input id="setPin" type="password" maxlength="4" placeholder="1234">
+      </div>
+
+      <button style="width:100%; background:#1b3323; color:white; border:none; padding:14px; border-radius:10px; font-weight:700; font-size:14px; cursor:pointer;" onclick="saveSettings()">Save settings</button>
     </div>
   </div>
 
+  <!-- Modal: Add Item with Photo Upload -->
   <div id="modalProductOverlay" class="modal-overlay">
     <div class="modal-card">
       <h3 style="margin-bottom:14px; font-size:18px;">Add New Grocery Item</h3>
