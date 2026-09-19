@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basket & Ledger</title>
+  <style>
+    :root {
+      --primary-dark: #1b3323;
+      --accent-yellow: #f5a623;
+      --cream-bg: #f8f5ee;
+      --card-bg: #ffffff;
+      --btn-green: #3d6e46;
+      --btn-action-red: #c93b2b;
+      --text-dark: #222222;
+      --text-muted: #777777;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--cream-bg); color: var(--text-dark); padding-bottom: 90px; }
+
+    header { background-color: var(--primary-dark); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .brand h1 { font-size: 20px; font-weight: 700; }
+    .brand p { font-size: 11px; opacity: 0.8; margin-top: 2px; }
+    .brand .delivery-rate { font-size: 12px; color: var(--accent-yellow); margin-top: 4px; font-weight: 600; }
+    .header-icons { display: flex; gap: 12px; }
+    .icon-badge-btn { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; position: relative; font-size: 16px; }
+    .badge-count { position: absolute; top: -3px; right: -3px; background: #e03b24; color: white; font-size: 10px; font-weight: bold; width: 17px; height: 17px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    .sub-bar { background-color: var(--accent-yellow); height: 4px; width: 100%; }
+    .container { max-width: 480px; margin: 0 auto; padding: 18px 16px; }
+
+    .section-title { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .section-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+
+    .category-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; scrollbar-width: none; }
+    .category-scroll::-webkit-scrollbar { display: none; }
+    .cat-pill { padding: 8px 16px; border-radius: 20px; background: white; border: 1px solid #dfd8cc; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; color: #444; }
+    .cat-pill.active { background: var(--btn-green); color: white; border-color: var(--btn-green); }
+
+    .product-card { background: var(--card-bg); border-radius: 14px; padding: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.03); border: 1px solid #eee8dc; }
+    .prod-icon { width: 56px; height: 56px; border-radius: 12px; background: #f0eae1; display: flex; align-items: center; justify-content: center; font-size: 26px; overflow: hidden; }
+    .prod-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .prod-details { flex: 1; }
+    .prod-name { font-size: 16px; font-weight: 700; }
+    .prod-unit { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+    .prod-stars { color: #f5a623; font-size: 11px; margin: 3px 0; }
+    .prod-stock { font-size: 11px; color: var(--btn-green); font-weight: 600; }
+    .prod-out-stock { color: #d9534f; font-weight: 600; font-size: 11px; }
+
+    .prod-action { text-align: right; }
+    .prod-price { font-size: 16px; font-weight: 800; color: #8c2a1c; margin-bottom: 6px; }
+    .btn-add { background: var(--btn-green); color: white; border: none; padding: 7px 18px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; }
+    
+    .qty-counter { display: flex; align-items: center; background: #ede7dc; border-radius: 8px; padding: 2px 6px; gap: 8px; }
+    .qty-counter button { background: none; border: none; font-size: 16px; font-weight: bold; cursor: pointer; padding: 4px 6px; color: var(--primary-dark); }
+    .qty-counter span { font-weight: 700; font-size: 14px; min-width: 14px; text-align: center; }
+
+    .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 14px 16px; background: white; border-top: 1px solid #e5dec9; max-width: 480px; margin: 0 auto; box-shadow: 0 -4px 10px rgba(0,0,0,0.06); }
+    .btn-red-action { width: 100%; background: var(--btn-action-red); color: white; border: none; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; display: block; }
+    .btn-red-action:disabled { background: #bbb; cursor: not-allowed; }
+
+    .back-nav { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .circle-back { width: 34px; height: 34px; border-radius: 50%; background: white; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+
+    .summary-box { background: white; border-radius: 12px; padding: 16px; border: 1px solid #eee8dc; margin-top: 16px; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px; }
+    .summary-row.total { font-size: 17px; font-weight: 800; border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px; }
+    .summary-note { font-size: 11px; color: var(--text-muted); margin-top: 6px; line-height: 1.4; }
+
+    .field-group { margin-bottom: 16px; }
+    .field-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #444; }
+    .field-group input, .field-group select { width: 100%; padding: 13px 14px; border-radius: 10px; border: 1px solid #ddd6c7; background: white; font-size: 14px; outline: none; }
+
+    .btn-share-loc { width: 100%; border: 1px solid var(--btn-green); background: #eaf4ec; color: var(--btn-green); border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; }
+
+    .pay-card { border: 1px solid #dfd8cc; background: white; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 14px; font-weight: 600; }
+    .pay-card.selected { border-color: var(--btn-green); background: #f2f8f3; }
+    .upi-qr-box { background: white; border-radius: 12px; border: 1px solid #ddd; padding: 16px; text-align: center; margin-top: 10px; }
+    .upi-qr-box img { width: 160px; height: 160px; margin: 10px auto; }
+    .upi-vpa-copy { background: #f0ebe1; padding: 6px 12px; border-radius: 6px; font-size: 12px; display: inline-block; font-weight: 600; margin-top: 6px; }
+
+    .order-confirm-card { text-align: center; padding: 30px 10px; }
+    .order-id-badge { font-size: 18px; font-weight: 800; color: var(--btn-green); margin: 16px 0; }
+    .btn-whatsapp { background: #25d366; color: white; border: none; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; text-decoration: none; }
+
+    .admin-tabs { display: flex; border-bottom: 1px solid #dfd8cc; margin-bottom: 14px; }
+    .admin-tab-btn { flex: 1; text-align: center; padding: 10px; background: none; border: none; font-size: 14px; font-weight: 600; color: #666; cursor: pointer; }
+    .admin-tab-btn.active { color: var(--btn-green); border-bottom: 3px solid var(--btn-green); }
+    .order-item-chip { font-size: 13px; color: var(--btn-green); font-weight: 700; margin-top: 4px; }
+    
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
+    .modal-card { background: white; border-radius: 16px; padding: 20px; width: 100%; max-width: 440px; max-height: 90vh; overflow-y: auto; }
+  </style>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, updateDoc, deleteDoc, serverTimestamp, query, orderBy } 
+      from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4ZIN6ZcL2DJkBtLkwV3sfixurCDtcF8",
+      authDomain: "local-grocery-f75ca.firebaseapp.com",
+      projectId: "local-grocery-f75ca",
+      storageBucket: "local-grocery-f75ca.firebasestorage.app",
+      messagingSenderId: "821021967186",
+      appId: "1:821021967186:web:02c04a98c903ef7cd5d7bb"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Replace with your real phone number if different
+    const OWNER_PHONE = "919898989898";
+    const UPI_ID = "shaiksophipasha@oksbi";
+    const ADMIN_PIN = "1234";
+
+    let catalog = [];
+    let cart = {};
+    let activeCat = "All";
+    let paymentMethod = "COD";
+    let deliveryPerKm = 10;
+    let base64ImageString = "";
+
+    window.showScreen = (screenId) => {
+      document.querySelectorAll('.screen').forEach(el => el.style.display = 'none');
+      document.getElementById(screenId).style.display = 'block';
+      window.scrollTo(0, 0);
+    };
+
+    window.setCategory = (cat) => {
+      activeCat = cat;
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.innerText === cat);
+      });
+      renderCatalog();
+    };
+
+    onSnapshot(doc(db, "settings", "delivery"), (docSnap) => {
+      if (docSnap.exists()) {
+        deliveryPerKm = docSnap.data().perKm || 10;
+      } else {
+        setDoc(doc(db, "settings", "delivery"), { perKm: 10 });
+      }
+      document.getElementById('headerDeliveryRate').innerText = `🚚 Delivery ₹${deliveryPerKm}/km`;
+      document.getElementById('checkoutDeliveryRateNote').innerText = `₹${deliveryPerKm}/km`;
+      document.getElementById('adminDeliveryInput').value = deliveryPerKm;
+    });
+
+    window.saveDeliveryRate = async () => {
+      const rate = parseFloat(document.getElementById('adminDeliveryInput').value);
+      if (isNaN(rate) || rate < 0) return alert("Please enter a valid rate!");
+      await setDoc(doc(db, "settings", "delivery"), { perKm: rate });
+      alert("Delivery charge per km updated!");
+    };
+
+    onSnapshot(collection(db, "products"), (snapshot) => {
+      catalog = [];
+      snapshot.forEach(docSnap => catalog.push({ id: docSnap.id, ...docSnap.data() }));
+      renderCatalog();
+      renderCart();
+      renderAdminCatalog();
+    });
+
+    function renderCatalog() {
+      const container = document.getElementById('catalogList');
+      const filtered = activeCat === "All" ? catalog : catalog.filter(p => p.category === activeCat);
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<p style="text-align:center; padding:30px; color:#888;">No items found. Tap 🔒 to add items in Admin mode.</p>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const qty = cart[item.id] || 0;
+        const iconDisplay = item.image 
+          ? `<img src="${item.image}" alt="${item.name}">` 
+          : (item.icon || '🛍️');
+
+        return `
+          <div class="product-card">
+            <div class="prod-icon">${iconDisplay}</div>
+            <div class="prod-details">
+              <div class="prod-name">${item.name}</div>
+              <div class="prod-unit">${item.unit}</div>
+              <div class="prod-stars">★★★★☆</div>
+              <div class="${item.inStock !== false ? 'prod-stock' : 'prod-out-stock'}">
+                ${item.inStock !== false ? 'In stock' : 'Out of stock'}
+              </div>
+            </div>
+            <div class="prod-action">
+              <div class="prod-price">₹${item.price}</div>
+              ${item.inStock === false ? '<span style="font-size:12px; color:#999;">Unavailable</span>' :
+                qty === 0 ? `<button class="btn-add" onclick="updateQty('${item.id}', 1)">Add</button>` :
+                `<div class="qty-counter">
+                  <button onclick="updateQty('${item.id}', -1)">−</button>
+                  <span>${qty}</span>
+                  <button onclick="updateQty('${item.id}', 1)">+</button>
+                </div>`
+              }
+            </div>
+          </div>
+        `;
+      }).join('');
+      updateHeaderBadge();
+    }
+
+    window.updateQty = (id, change) => {
+      const current = cart[id] || 0;
+      const next = current + change;
+      if (next <= 0) delete cart[id];
+      else cart[id] = next;
+      renderCatalog();
+      renderCart();
+    };
+
+    function updateHeaderBadge() {
+      let count = 0;
+      Object.values(cart).forEach(q => count += q);
+      const badge = document.getElementById('cartBadgeCount');
+      if (count > 0) {
+        badge.style.display = 'flex';
+        badge.innerText = count;
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartItemList');
+      let subtotal = 0;
+      let count = 0;
+      const cartEntries = Object.entries(cart);
+
+      if (cartEntries.length === 0) {
+        container.innerHTML = `<p style="text-align:center; padding:40px; color:#888;">Your basket is empty.</p>`;
+        document.getElementById('cartTotalSummary').style.display = 'none';
+        document.getElementById('btnGoToDetails').disabled = true;
+        return;
+      }
+
+      document.getElementById('cartTotalSummary').style.display = 'block';
+      document.getElementById('btnGoToDetails').disabled = false;
+
+      container.innerHTML = cartEntries.map(([id, qty]) => {
+        const item = catalog.find(p => p.id === id);
+        if (!item) return '';
+        const itemTotal = item.price * qty;
+        subtotal += itemTotal;
+        count += qty;
+
+        return `
+          <div class="product-card">
+            <div class="prod-details">
+              <div class="prod-name">${item.name}</div>
+              <div class="prod-unit">${item.unit}</div>
+            </div>
+            <div class="qty-counter">
+              <button onclick="updateQty('${item.id}', -1)">−</button>
+              <span>${qty}</span>
+              <button onclick="updateQty('${item.id}', 1)">+</button>
+            </div>
+            <div class="prod-price" style="margin:0 0 0 10px;">₹${itemTotal}</div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('cartTotalCount').innerText = count;
+      document.getElementById('cartSubtotal').innerText = `₹${subtotal}`;
+      document.getElementById('checkoutItemsCount').innerText = count;
+      document.getElementById('checkoutTotal').innerText = `₹${subtotal}`;
+      
+      const upiPayUrl = `upi://pay?pa=${UPI_ID}&pn=GroceryShop&am=${subtotal}&cu=INR`;
+      document.getElementById('upiQrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiPayUrl)}`;
+      document.getElementById('upiAmountText').innerText = `Amount to pay: ₹${subtotal}`;
+    }
+
+    window.detectLocation = () => {
+      if (!navigator.geolocation) return alert("Geolocation not supported by your browser");
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          document.getElementById('custLocationPin').value = `https://maps.google.com/?q=${lat},${lon}`;
+        },
+        () => alert("Could not fetch location. Please enter your address.")
+      );
+    };
+
+    window.selectPayment = (type) => {
+      paymentMethod = type;
+      document.getElementById('payCOD').classList.toggle('selected', type === 'COD');
+      document.getElementById('payUPI').classList.toggle('selected', type === 'UPI');
+      document.getElementById('upiDetails').style.display = type === 'UPI' ? 'block' : 'none';
+    };
+
+    window.handleImageUpload = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const MAX_WIDTH = 250;
+          const scale = MAX_WIDTH / img.width;
+          canvas.width = MAX_WIDTH;
+          canvas.height = img.height * scale;
+
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          base64ImageString = canvas.toDataURL("image/jpeg", 0.7);
+          document.getElementById('imagePreview').src = base64ImageString;
+          document.getElementById('imagePreview').style.display = 'block';
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.openProductModal = () => {
+      base64ImageString = "";
+      document.getElementById('modalProdName').value = "";
+      document.getElementById('modalProdPrice').value = "";
+      document.getElementById('modalProdUnit').value = "per kg";
+      document.getElementById('modalProdCategory').value = "Vegetables";
+      document.getElementById('imagePreview').style.display = 'none';
+      document.getElementById('modalProductOverlay').style.display = 'flex';
+    };
+
+    window.closeProductModal = () => {
+      document.getElementById('modalProductOverlay').style.display = 'none';
+    };
+
+    window.saveNewProduct = async () => {
+      const name = document.getElementById('modalProdName').value.trim();
+      const price = parseFloat(document.getElementById('modalProdPrice').value);
+      const unit = document.getElementById('modalProdUnit').value.trim();
+      const category = document.getElementById('modalProdCategory').value;
+
+      if (!name || isNaN(price)) return alert("Please fill name and rate!");
+
+      await addDoc(collection(db, "products"), {
+        name,
+        price,
+        unit: unit || 'per kg',
+        category,
+        image: base64ImageString || null,
+        icon: base64ImageString ? null : '🛍️',
+        inStock: true
+      });
+
+      closeProductModal();
+    };
+
+    window.deleteProduct = async (id) => {
+      if (confirm("Delete this item?")) await deleteDoc(doc(db, "products", id));
+    };
+
+    window.placeOrder = async () => {
+      const name = document.getElementById('custName').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      const address = document.getElementById('custAddress').value.trim();
+      const locPin = document.getElementById('custLocationPin').value.trim();
+
+      if (!name || !phone || !address) {
+        return alert("Please fill in your Name, Phone Number, and Address!");
+      }
+
+      let total = 0;
+      const orderItems = [];
+      Object.entries(cart).forEach(([id, qty]) => {
+        const item = catalog.find(p => p.id === id);
+        if (item) {
+          orderItems.push({ name: item.name, price: item.price, unit: item.unit, qty });
+          total += item.price * qty;
+        }
+      });
+
+      const orderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
+
+      const orderData = {
+        orderId,
+        customerName: name,
+        phone,
+        address,
+        locationPin: locPin,
+        items: orderItems,
+        total,
+        deliveryRateApplied: deliveryPerKm,
+        paymentMethod,
+        status: "New",
+        timestamp: serverTimestamp()
+      };
+
+      await addDoc(collection(db, "orders"), orderData);
+
+      cart = {};
+      updateHeaderBadge();
+
+      document.getElementById('confOrderId').innerText = `Order ${orderId}`;
+
+      let text = `*New order*\n*${orderId}*\n*Customer:* ${name}\n*Phone:* ${phone}\n*Address:* ${address}\n`;
+      if (locPin) text += `*Maps Pin:* ${locPin}\n`;
+      text += `\n*Items:*\n`;
+      orderItems.forEach(i => text += `• ${i.name} x${i.qty} (${i.unit})\n`);
+      text += `— *Items Total: ₹${total}*\n(Delivery @ ₹${deliveryPerKm}/km to be added upon route)\n*Payment:* ${paymentMethod}`;
+
+      const waUrl = `https://wa.me/${OWNER_PHONE}?text=${encodeURI(text)}`;
+      document.getElementById('btnWhatsAppSend').href = waUrl;
+
+      showScreen('screenConfirm');
+    };
+
+    window.promptAdminLogin = () => {
+      const pin = prompt("Enter Shop Owner PIN:");
+      if (pin === ADMIN_PIN) {
+        showScreen('screenAdmin');
+      } else if (pin) {
+        alert("Incorrect PIN!");
+      }
+    };
+
+    window.switchAdminTab = (tab) => {
+      document.getElementById('adminItemsTab').style.display = tab === 'items' ? 'block' : 'none';
+      document.getElementById('adminOrdersTab').style.display = tab === 'orders' ? 'block' : 'none';
+      document.getElementById('adminSettingsTab').style.display = tab === 'settings' ? 'block' : 'none';
+      document.getElementById('tabBtnItems').classList.toggle('active', tab === 'items');
+      document.getElementById('tabBtnOrders').classList.toggle('active', tab === 'orders');
+      document.getElementById('tabBtnSettings').classList.toggle('active', tab === 'settings');
+    };
+
+    function renderAdminCatalog() {
+      const container = document.getElementById('adminItemsList');
+      container.innerHTML = catalog.map(item => {
+        const iconDisplay = item.image 
+          ? `<img src="${item.image}" alt="${item.name}">` 
+          : (item.icon || '🛍️');
+
+        return `
+          <div class="product-card">
+            <div class="prod-icon">${iconDisplay}</div>
+            <div class="prod-details">
+              <div class="prod-name">${item.name}</div>
+              <div class="prod-unit">₹${item.price} / ${item.unit} • ${item.category}</div>
+            </div>
+            <button style="border:none; background:#fee; color:#c00; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;" onclick="deleteProduct('${item.id}')">Delete</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    onSnapshot(query(collection(db, "orders"), orderBy("timestamp", "desc")), (snapshot) => {
+      const container = document.getElementById('adminOrdersList');
+      if (snapshot.empty) {
+        container.innerHTML = `<p style="text-align:center; padding:30px; color:#888;">No orders received yet.</p>`;
+        return;
+      }
+      container.innerHTML = snapshot.docs.map(docSnap => {
+        const ord = docSnap.data();
+        const itemsSummary = (ord.items || []).map(i => `${i.name} x${i.qty}`).join(', ');
+        return `
+          <div class="product-card" style="flex-direction:column; align-items:flex-start; gap:8px;">
+            <div style="display:flex; justify-content:space-between; width:100%;">
+              <strong>${ord.orderId || 'Order'}</strong>
+              <span style="font-size:12px; background:#e8f4ec; color:#2e7d32; padding:3px 8px; border-radius:4px; font-weight:700;">${ord.status || 'New'}</span>
+            </div>
+            <div style="font-size:14px; font-weight:600;">${ord.customerName} - ${ord.phone}</div>
+            <div style="font-size:13px; color:#555;">📍 ${ord.address}</div>
+            <div class="order-item-chip">🛒 ${itemsSummary}</div>
+            <div style="font-size:14px; font-weight:800; margin-top:4px;">Items ₹${ord.total} (${ord.paymentMethod})</div>
+            <div style="display:flex; gap:8px; margin-top:6px; width:100%;">
+              <a href="https://wa.me/${ord.phone}" target="_blank" style="text-decoration:none; background:#25d366; color:white; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700;">WhatsApp</a>
+              <button onclick="markDelivered('${docSnap.id}')" style="background:#3d6e46; color:white; border:none; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">Mark Fulfilled</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    });
+
+    window.markDelivered = async (id) => {
+      await updateDoc(doc(db, "orders", id), { status: "Fulfilled" });
+    };
+  </script>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <h1>Basket & Ledger</h1>
+      <p>Fresh picks, hand-picked delivery</p>
+      <div id="headerDeliveryRate" class="delivery-rate">🚚 Delivery ₹10/km</div>
+    </div>
+    <div class="header-icons">
+      <div class="icon-badge-btn" onclick="promptAdminLogin()">🔒</div>
+      <div class="icon-badge-btn" onclick="showScreen('screenCart')">
+        🧺
+        <span id="cartBadgeCount" class="badge-count" style="display:none;">0</span>
+      </div>
+    </div>
+  </header>
+  <div class="sub-bar"></div>
+
+  <div id="screenCatalog" class="screen container">
+    <h2 class="section-title">Today's basket</h2>
+    <p class="section-desc">Pick what you need — we'll fetch it fresh from the market.</p>
+
+    <div class="category-scroll">
+      <button class="cat-pill active" onclick="setCategory('All')">All</button>
+      <button class="cat-pill" onclick="setCategory('Vegetables')">Vegetables</button>
+      <button class="cat-pill" onclick="setCategory('Fruits')">Fruits</button>
+      <button class="cat-pill" onclick="setCategory('Dairy')">Dairy</button>
+      <button class="cat-pill" onclick="setCategory('Staples')">Staples</button>
+    </div>
+
+    <div id="catalogList"></div>
+  </div>
+
+  <div id="screenCart" class="screen container" style="display:none;">
+    <div class="back-nav">
+      <div class="circle-back" onclick="showScreen('screenCatalog')">←</div>
+      <h2 style="font-size: 19px; font-weight:800;">Your cart</h2>
+    </div>
+
+    <div id="cartItemList"></div>
+
+    <div id="cartTotalSummary" class="summary-box" style="display:none;">
+      <div class="summary-row">
+        <span>Items</span>
+        <span id="cartTotalCount">0</span>
+      </div>
+      <div class="summary-row total">
+        <span>Items total</span>
+        <span id="cartSubtotal">₹0</span>
+      </div>
+      <p class="summary-note">Delivery charge is calculated on the next step, based on distance from the shop.</p>
+    </div>
+
+    <div class="bottom-bar">
+      <button id="btnGoToDetails" class="btn-red-action" onclick="showScreen('screenDetails')">Continue to details</button>
+    </div>
+  </div>
+
+  <div id="screenDetails" class="screen container" style="display:none;">
+    <div class="back-nav">
+      <div class="circle-back" onclick="showScreen('screenCart')">←</div>
+      <h2 style="font-size: 19px; font-weight:800;">Delivery details</h2>
+    </div>
+
+    <div class="summary-box" style="margin-bottom: 18px;">
+      <div class="summary-row">
+        <span>Items</span>
+        <span id="checkoutItemsCount">0</span>
+      </div>
+      <div class="summary-row">
+        <span>Delivery Rate</span>
+        <span id="checkoutDeliveryRateNote">₹10/km</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total (Items)</span>
+        <span id="checkoutTotal">₹0</span>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label>Your name</label>
+      <input id="custName" placeholder="e.g. Asha Rao">
+    </div>
+
+    <div class="field-group">
+      <label>Phone number</label>
+      <input id="custPhone" type="tel" placeholder="e.g. 98765 43210">
+    </div>
+
+    <div class="field-group">
+      <label>Delivery address</label>
+      <input id="custAddress" placeholder="Flat / street / landmark">
+    </div>
+
+    <div class="field-group">
+      <label>Location pin (optional, but helps a lot)</label>
+      <input id="custLocationPin" placeholder="Paste a Google Maps link, or tap Share below">
+      <button class="btn-share-loc" onclick="detectLocation()">📍 Share my location</button>
+    </div>
+
+    <h3 style="font-size:14px; font-weight:700; margin: 18px 0 8px;">How will you pay?</h3>
+    
+    <div id="payCOD" class="pay-card selected" onclick="selectPayment('COD')">
+      <span>💵</span>
+      <div>
+        <div>Cash on delivery</div>
+        <div style="font-size:11px; color:#666;">Pay when it arrives</div>
+      </div>
+    </div>
+
+    <div id="payUPI" class="pay-card" onclick="selectPayment('UPI')">
+      <span>📱</span>
+      <div>
+        <div>Pay by UPI now</div>
+        <div style="font-size:11px; color:#666;">GPay, PhonePe, Paytm, any UPI app</div>
+      </div>
+    </div>
+
+    <div id="upiDetails" class="upi-qr-box" style="display:none;">
+      <img id="upiQrCode" src="" alt="UPI QR Code">
+      <div class="upi-vpa-copy">shaiksophipasha@oksbi</div>
+      <div id="upiAmountText" style="font-size:13px; font-weight:700; margin-top:8px;"></div>
+    </div>
+
+    <div class="bottom-bar">
+      <button class="btn-red-action" onclick="placeOrder()">Place order</button>
+    </div>
+  </div>
+
+  <div id="screenConfirm" class="screen container" style="display:none;">
+    <div class="order-confirm-card">
+      <h2 style="font-size:20px; font-weight:800;">Order sent!</h2>
+      <p style="font-size:13px; color:#666; margin: 8px 0 16px;">The shop has your order. They'll confirm the total once items are weighed and let you know when it's on the way.</p>
+      
+      <div id="confOrderId" class="order-id-badge">Order ORD-000000</div>
+
+      <a id="btnWhatsAppSend" class="btn-whatsapp" href="#" target="_blank">
+        📱 Send to shop on WhatsApp
+      </a>
+
+      <button style="margin-top:14px; background:white; border:1px solid #ddd; padding:12px; border-radius:10px; font-weight:600; width:100%; cursor:pointer;" onclick="showScreen('screenCatalog')">
+        Back to shopping
+      </button>
+    </div>
+  </div>
+
+  <div id="screenAdmin" class="screen container" style="display:none;">
+    <div class="back-nav">
+      <div class="circle-back" onclick="showScreen('screenCatalog')">←</div>
+      <h2 style="font-size: 19px; font-weight:800;">Shop dashboard</h2>
+    </div>
+
+    <div class="admin-tabs">
+      <button id="tabBtnItems" class="admin-tab-btn active" onclick="switchAdminTab('items')">Items</button>
+      <button id="tabBtnOrders" class="admin-tab-btn" onclick="switchAdminTab('orders')">Orders</button>
+      <button id="tabBtnSettings" class="admin-tab-btn" onclick="switchAdminTab('settings')">Settings</button>
+    </div>
+
+    <div id="adminItemsTab">
+      <button onclick="openProductModal()" style="width:100%; background:var(--btn-green); color:white; border:none; padding:12px; border-radius:10px; font-weight:700; margin-bottom:14px; cursor:pointer;">+ Add Item with Photo</button>
+      <div id="adminItemsList"></div>
+    </div>
+
+    <div id="adminOrdersTab" style="display:none;">
+      <div id="adminOrdersList"></div>
+    </div>
+
+    <div id="adminSettingsTab" style="display:none;">
+      <div class="summary-box">
+        <h3 style="margin-bottom:12px;">Delivery Settings</h3>
+        <div class="field-group">
+          <label>Delivery Rate (₹ per kilometer)</label>
+          <input id="adminDeliveryInput" type="number" placeholder="e.g. 10">
+        </div>
+        <button class="btn-red-action" style="padding:12px;" onclick="saveDeliveryRate()">Save Delivery Rate</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalProductOverlay" class="modal-overlay">
+    <div class="modal-card">
+      <h3 style="margin-bottom:14px; font-size:18px;">Add New Grocery Item</h3>
+      
+      <div class="field-group">
+        <label>Item Name</label>
+        <input id="modalProdName" placeholder="e.g. Fresh Tomatoes">
+      </div>
+
+      <div class="field-group">
+        <label>Rate / Price (₹)</label>
+        <input id="modalProdPrice" type="number" placeholder="e.g. 40">
+      </div>
+
+      <div class="field-group">
+        <label>Unit</label>
+        <input id="modalProdUnit" placeholder="e.g. per kg, 500g, 1 piece, 1 litre">
+      </div>
+
+      <div class="field-group">
+        <label>Category</label>
+        <select id="modalProdCategory">
+          <option value="Vegetables">Vegetables</option>
+          <option value="Fruits">Fruits</option>
+          <option value="Dairy">Dairy</option>
+          <option value="Staples">Staples</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>Item Photo (Upload from phone/camera)</label>
+        <input type="file" accept="image/*" onchange="handleImageUpload(event)" style="border:1px dashed #ccc; padding:8px;">
+        <img id="imagePreview" src="" alt="Preview" style="display:none; width:80px; height:80px; object-fit:cover; border-radius:8px; margin-top:8px;">
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:16px;">
+        <button style="flex:1; padding:12px; background:#e0dbcc; border:none; border-radius:8px; font-weight:600; cursor:pointer;" onclick="closeProductModal()">Cancel</button>
+        <button style="flex:1; padding:12px; background:var(--btn-green); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer;" onclick="saveNewProduct()">Save Item</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
